@@ -1,5 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:
+##
 
 ## AIM:
  To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
@@ -33,11 +33,102 @@ Publish the website in the given URL.
 
 ## PROGRAM :
 
+# power.html
+
+```
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>POWER OF LAMP IN INCANDESCENT BULD</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style type="text/css">
+        .box {
+            display: block;
+            width: 500px;
+            min-height: 300px;
+            font-size: 20px;
+            background: rgb(21, 208, 215);
+            background: linear-gradient(90deg, rgb(99, 237, 118) 9%, rgb(193, 166, 202) 56%);
+            border-radius: 10px;
+            box-shadow: rgba(239, 5, 24, 0.35) 0px 5px 15px;
+        }
+       </style>
+</head>
+
+<body>
+    <div>
+        <div class="box">
+            <h1>POWER OF LAMP IN INCANDESCENT BULB</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    INTENSITY : <input type="text" name="Intensity" value="{{I}}"></input>(in A)<br />
+                </div>
+                <div >
+                    RESISITANCE : <input type="text" name="Resistence" value="{{R}}"></input>(in Ω)<br />
+                </div>
+                <div >
+                    <input type="submit" value="Calculate"></input><br />
+                </div>
+                <div>
+                    POWER : <input type="text" name="Power" value="{{Power}}"></input>W<br />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+```
+# views.py 
+
+```
+from django.shortcuts import render
+
+def powerlamp(request):
+    context={}
+    context['Power'] = ""
+    context['I'] = ""
+    context['R'] = ""
+    if request.method == 'POST':
+        print("POST method is used")
+        I = request.POST.get('Intensity','')
+        R = request.POST.get('Resistence','')
+        print('request=',request)
+        print('Intensity=',I)
+        print('Resistence=',R)
+        Power = int(I) * int(I) * int(R)
+        context['Power'] = Power
+        context['I'] = I
+        context['R'] = R
+        print('Power=',Power)
+    return render(request,'Mathapp/power.html',context)
+
+
+```
+
+# urls.py
+
+```
+from django.contrib import admin
+from django.urls import path
+from Mathapp import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.powerlamp,name="powerlamp"),]
+```
+
 
 ## SERVER SIDE PROCESSING:
 
+<img width="1027" height="515" alt="Screenshot 2025-11-09 234959" src="https://github.com/user-attachments/assets/a3c4be38-784f-4fd1-b5ca-ec2ce25fc8be" />
+
 
 ## HOMEPAGE:
+
+<img width="1041" height="511" alt="Screenshot 2025-11-09 235011" src="https://github.com/user-attachments/assets/4efe2ad6-3b01-46e7-8049-ccc2256acaf6" />
 
 
 ## RESULT:
